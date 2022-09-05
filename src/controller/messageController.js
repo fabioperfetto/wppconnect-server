@@ -85,6 +85,7 @@ export async function sendFile(req, res) {
 
     if (results.length === 0) return res.status(400).json('Error sending message');
     if (req.file) await unlinkAsync(pathFile);
+    req.io.emit('mensagem-enviada', results);
     returnSucess(res, results);
   } catch (error) {
     returnError(req, res, error);
@@ -92,7 +93,7 @@ export async function sendFile(req, res) {
 }
 
 export async function sendFile64(req, res) {
-  const { base64, phone, filename } = req.body;
+  const { base64, phone, filename = 'file64', message } = req.body;
 
   if (!base64) return res.status(401).send({ message: 'The base64 of the file was not informed' });
 
@@ -105,6 +106,7 @@ export async function sendFile64(req, res) {
     }
 
     if (results.length === 0) return res.status(400).json('Error sending message');
+    req.io.emit('mensagem-enviada', results);
     returnSucess(res, results);
   } catch (error) {
     returnError(req, res, error);
@@ -121,6 +123,7 @@ export async function sendVoice(req, res) {
     }
 
     if (results.length === 0) return res.status(400).json('Error sending message');
+    req.io.emit('mensagem-enviada', results);
     returnSucess(res, results);
   } catch (error) {
     returnError(req, res, error);
@@ -137,6 +140,7 @@ export async function sendVoice64(req, res) {
     }
 
     if (results.length === 0) return res.status(400).json('Error sending message');
+    req.io.emit('mensagem-enviada', results);
     returnSucess(res, results);
   } catch (error) {
     returnError(req, res, error);
